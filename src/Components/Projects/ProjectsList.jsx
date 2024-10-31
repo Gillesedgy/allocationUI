@@ -31,7 +31,7 @@ const ProjectsList = ({searchName}) => {
     };
 
     fetchProject();
-   }, []);
+   }, [searchName]);
 
    if (loading) return <p>Loading...</p>
 
