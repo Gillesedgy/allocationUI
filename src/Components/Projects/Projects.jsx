@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import ProjectsList from "./ProjectsList";
+
 
 function Projects({ name }) {
   const [projects, setProjects] = useState([]);
@@ -50,8 +52,10 @@ function Projects({ name }) {
       }
     };
     useEffect(() => {
-    fetchProjects();
-  }, []);
+      if (searchName.trim()){
+        fetchProjects();
+      }
+  }, []);  
 
   //Create a new project
   const handleCreateProject = async () => {
@@ -84,6 +88,7 @@ function Projects({ name }) {
       <h1 className="text-3xl font-extrabold text-center text-blue-700 mb-8">
         Projects
       </h1>
+      <ProjectsList  searchName={searchName}/>
 
       {/* Search box for Projects By Name*/}
       <div className="mb-6">
