@@ -22,11 +22,10 @@ function Projects({ name }) {
   
     const fetchProjects = async () => {
       try {
-        const resp = await fetch(
+        const resp = await axios.get(
           `http://localhost:8080/api/projects/getAllProjects/${searchName}`
         ); 
-        const data = await resp.json();
-        setProjects(data);
+        setProjects(resp.data);
       } catch (error) {
         console.error("Error fetching projects:", error);
         // Fallback to dummy data
@@ -55,9 +54,9 @@ function Projects({ name }) {
     };
     useEffect(() => {
       if (searchName.trim()){
-        fetchProjects();
+        setProjects([]);
       }
-  }, []);  
+  }, [searchName]);  
 
   // format date function
 

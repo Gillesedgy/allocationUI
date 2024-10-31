@@ -14,7 +14,7 @@ const ProjectsList = ({searchName}) => {
             setLoading(true);
             setError("");
             try {
-                const resp = await axios.get( `http://localhost:8080/api/projects/getAllProjects/${searchName}`)
+                const resp = await axios.get(`http://localhost:8080/api/projects/getAllProjects/${searchName}`)
                 if (resp.data.length > 0){
                     setProject(resp.data[0]);
                 } else {
@@ -29,29 +29,28 @@ const ProjectsList = ({searchName}) => {
             setProject(null);
         }
     };
-
-    fetchProject();
+    fetchProject();    
    }, [searchName]);
 
-   if (loading) return <p>Loading...</p>
+   if (loading) return <p>Loading...</p>;
 
    return (
     <div className="p-4">
-        {error && <p className="flex justify-between items-center mb-4"></p>}
-        {project ? (
+        {project && (
             <div>
                 <h3>{project.name}</h3>
-                <p>{project.clientId}</p>
-                <p>{project.description}</p>
-                <p>{project.skills}</p>
-                <p>{project.startDate}</p>
-                <p>{project.endDate}</p>
+                <p>Client ID: {project.clientId}</p>
+                <p>Description: {project.description}</p>
+                <p>Start Date: {project.startDate}</p>
+                <p>End Date: {project.endDate}</p>
             </div>
-        ) : (
-            <p>Project name not found.</p>
         )}
+
     </div>
    )
+
+
+
 }
 
 
