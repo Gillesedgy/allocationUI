@@ -14,6 +14,8 @@ function Projects({ name }) {
     startDate: "",
     endDate: "",
   });
+  const [contractId, setContractId] = useState("");
+
 
   // Simulate fetching projects from backend with dummy data fallback
   //fetch projects by name... Not all projects
@@ -57,12 +59,36 @@ function Projects({ name }) {
       }
   }, []);  
 
+  // format date function
+
+  // const formatDate = (date) => {
+  //   const [year, month, day] = date.split('-');
+  //   return `${month}/${day}/${year}`;
+  // };
+
   //Create a new project
-  const handleCreateProject = async () => {
+  const handleCreateProject = async (e) => {
+    e.preventDefault();
+
+    const contractId = 1;
+
+    const formattedCreateProject = {
+      name: createProject.name,
+      clientId: parseInt(createProject.clientId, 10),
+      description: createProject.description,
+      skills: createProject.skills.split(",").map(skill => skill.trim()),
+      startDate: createProject.startDate,
+      endDate: createProject.endDate,
+      contractId: contractId,
+      
+      //startDate: formatDate(createProject.startDate),
+      //endDate: formatDate(createProject.endDate),
+    };
+
     try {
       const resp = await axios.post(
-        "http://localhost:8080/api/create",
-        createProject
+        "http://localhost:8080/api/projects/create",
+        formattedCreateProject
       );
       setProjects((prevProjects) => [...prevProjects, resp.data]);
       alert("A project has been created!");
@@ -160,6 +186,13 @@ function Projects({ name }) {
           onChange={(e) =>
             setCreateProject({ ...createProject, endDate: e.target.value })
           }
+          className="border p-2 mb-2 mr-2"
+        />
+        <input 
+          type = "text"
+          placeholder="Contract Id"
+          value={contractId}
+          onChange={(e) => setContractId(e.target.value)}
           className="border p-2 mb-2 mr-2"
         />
 
