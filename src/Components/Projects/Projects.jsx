@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function Projects({ name }) {
   const [projects, setProjects] = useState([]);
+  const [searchName, setSearchName] = useState("");
   const [createProject, setCreateProject] = useState({
     name: "",
     clientId: "",
     description: "",
     skills: "",
-    starDate: "",
+    startDate: "",
     endDate: "",
   });
 
   // Simulate fetching projects from backend with dummy data fallback
   //fetch projects by name... Not all projects
-  useEffect(() => {
+  
     const fetchProjects = async () => {
       try {
         const resp = await fetch(
-          `http://localhost:8080/api/projects/getAllProjects/${name}`
-        ); // Replace with actual API endpoint
-        const data = await response.json();
+          `http://localhost:8080/api/projects/getAllProjects/${searchName}`
+        ); 
+        const data = await resp.json();
         setProjects(data);
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -47,6 +49,7 @@ function Projects({ name }) {
         ]);
       }
     };
+    useEffect(() => {
     fetchProjects();
   }, []);
 
@@ -59,7 +62,7 @@ function Projects({ name }) {
       );
       setProjects((prevProjects) => [...prevProjects, resp.data]);
       alert("A project has been created!");
-      resetNewProject();
+      resetCreateProject();
     } catch (error) {
       alert("Failed to create a project. Please try again");
     }
@@ -71,7 +74,7 @@ function Projects({ name }) {
       clientId: "",
       description: "",
       skills: "",
-      starDate: "",
+      startDate: "",
       endDate: "",
     });
   };
@@ -81,6 +84,23 @@ function Projects({ name }) {
       <h1 className="text-3xl font-extrabold text-center text-blue-700 mb-8">
         Projects
       </h1>
+
+      {/* Search box for Projects By Name*/}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Enter Project Name"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+          className="border p-2 mb-2 mr-2"
+        />
+        <button
+         onClick={fetchProjects}
+          className="bg-blue-500 text-white px-4 py-2"
+        >
+         Search Projects By Name
+        </button>
+      </div>
 
       {/*  Create New Project Form */}
       <div className="mt-8">
