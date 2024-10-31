@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-function Projects() {
+function Projects({ name }) {
   const [projects, setProjects] = useState([]);
+  const [createProject, setCreateProject] = useState({
+    name: "",
+    clientId: "",
+    description: "",
+    skills: "",
+    starDate: "",
+    endDate: "",
+  });
 
   // Simulate fetching projects from backend with dummy data fallback
+  //fetch projects by name... Not all projects
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("https://your-api.com/projects"); // Replace with actual API endpoint
+        const resp = await fetch(
+          `http://localhost:8080/api/projects/getAllProjects/${name}`
+        ); // Replace with actual API endpoint
         const data = await response.json();
         setProjects(data);
       } catch (error) {
@@ -39,11 +50,109 @@ function Projects() {
     fetchProjects();
   }, []);
 
+  //Create a new project
+  const handleCreateProject = async () => {
+    try {
+      const resp = await axios.post(
+        "http://localhost:8080/api/create",
+        createProject
+      );
+      setProjects((prevProjects) => [...prevProjects, resp.data]);
+      alert("A project has been created!");
+      resetNewProject();
+    } catch (error) {
+      alert("Failed to create a project. Please try again");
+    }
+  };
+
+  const resetCreateProject = () => {
+    setCreateProject({
+      name: "",
+      clientId: "",
+      description: "",
+      skills: "",
+      starDate: "",
+      endDate: "",
+    });
+  };
+
   return (
     <div className="bg-indigo-500 min-h-screen p-8">
       <h1 className="text-3xl font-extrabold text-center text-blue-700 mb-8">
         Projects
       </h1>
+
+      {/*  Create New Project Form */}
+      <div className="mt-8">
+        <h2 className="text-2xl mb-4">Create A Project</h2>
+        <input
+          type="text"
+          placeholder="Project Name"
+          value={createProject.name}
+          onChange={(e) =>
+            setCreateProject({ ...createProject, name: e.target.value })
+          }
+          className="border p-2 mb-2 mr-2"
+        />
+        <input
+          type="text"
+          placeholder="Client Id"
+          value={createProject.clientId}
+          onChange={(e) =>
+            setCreateProject({ ...createProject, clientId: e.target.value })
+          }
+          className="border p-2 mb-2 mr-2"
+        />
+        <input
+          type="text"
+          placeholder="Description"
+          value={createProject.description}
+          onChange={(e) =>
+            setCreateProject({ ...createProject, description: e.target.value })
+          }
+          className="border p-2 mb-2 mr-2"
+        />
+        <input
+          type="text"
+          placeholder="Skills (comma-separated)"
+          value={createProject.skills}
+          onChange={(e) =>
+            setCreateProject({ ...createProject, skills: e.target.value })
+          }
+          className="border p-2 mb-2 mr-2"
+        />
+        <input
+          type="date"
+          value={createProject.startDate}
+          onChange={(e) =>
+            setCreateProject({ ...createProject, startDate: e.target.value })
+          }
+          className="border p-2 mb-2 mr-2"
+        />
+        <input
+          type="date"
+          value={createProject.endDate}
+          onChange={(e) =>
+            setCreateProject({ ...createProject, endDate: e.target.value })
+          }
+          className="border p-2 mb-2 mr-2"
+        />
+
+        <button
+          onClick={handleCreateProject}
+          className="bg-green-500 text-white px-4 py-2"
+        >
+          Create Project
+        </button>
+        <button
+          onClick={resetCreateProject}
+          className="bg-green-500 text-white px-4 py-2"
+        >
+          Reset Form
+        </button>
+      </div>
+
+      {/* Show list of projects */}
       <div className="grid gap-8 lg:grid-cols-2 md:grid-cols-1 max-w-6xl mx-auto">
         {projects.length > 0 ? (
           projects.map((project) => (

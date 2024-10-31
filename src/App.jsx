@@ -6,6 +6,7 @@ import RateCard from "./Components/RateCard/RateCard";
 import Contracts from "./Components/Contracts/Contracts";
 import Contact from "./Components/Contact/Contact";
 import Banner from "./Components/Banner/Banner";
+import Projects from "./Components/Projects/Projects";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <section id="home" className="p-8">
         <h1 className="text-4xl font-extrabold text-center">
           Welcome to People Shores Allocation System
-          <Banner/>
+          <Banner />
         </h1>
       </section>
       <section id="about" className="p-8 bg-gray-100">
@@ -34,6 +35,9 @@ function App() {
       </section>
       <section id="contracts">
         <Contracts />
+      </section>
+      <section id="projects">
+        <Projects />
       </section>
       <section id="contact">
         <Contact />
